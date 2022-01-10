@@ -65,7 +65,10 @@ function BottomTabNavigator() {
         tabBarActiveTintColor: Colors[colorScheme].tint,
         tabBarShowLabel: false,
         headerShadowVisible: false,
-        headerShown: false
+        headerShown: false,
+        tabBarStyle: {
+          backgroundColor: "#Fdfcfa"
+        }
       }}>
       <BottomTab.Screen
         name="TabOne"
