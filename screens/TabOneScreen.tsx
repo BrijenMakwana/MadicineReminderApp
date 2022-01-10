@@ -4,6 +4,7 @@ import EditScreenInfo from '../components/EditScreenInfo';
 import MedicineReminderComponent from '../components/MedicineReminderComponent';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
+import UICalender from '../UIElements/UICalender';
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
 
@@ -75,6 +76,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.headerTitle}>Your drug{"\n"}cabinet</Text>
+      <UICalender/>
       <View style={styles.medicineBlocks}>
         
         <FlatList
@@ -102,7 +104,8 @@ const styles = StyleSheet.create({
     fontSize: 40,
     color: "#2d222b",
     fontWeight: "700",
-    padding: 20
+    padding: 20,
+    marginTop: 30
   },
   medicineBlocks:{
     backgroundColor: '#Fdfcfa',
