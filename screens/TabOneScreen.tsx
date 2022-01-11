@@ -1,12 +1,21 @@
-import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
+import { FlatList, SafeAreaView, StyleSheet,LayoutAnimation,
+  UIManager, 
+  Animated,
+  Pressable} from 'react-native';
 
-import EditScreenInfo from '../components/EditScreenInfo';
 import MedicineReminderComponent from '../components/MedicineReminderComponent';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import UICalender from '../UIElements/UICalender';
+import { MaterialIcons } from '@expo/vector-icons';
+import { useEffect, useState } from 'react';
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+
+  const animatedValue = new Animated.Value(410);
+  const animatedValue2 = new Animated.Value(700);
+  const [isExpanded,setIsExpaned] = useState(false);
+  
 
   const medicinereminder = [{
     id: "1",
@@ -73,22 +82,127 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
     medicineReminder: false
   }];
   
+  const dates = [
+    {
+      key: "1",
+      dateItem: new Date()
+    },
+    {
+      key: "2",
+      dateItem: new Date()
+    },
+    {
+      key: "3",
+      dateItem: new Date()
+    },
+    {
+      key: "4",
+      dateItem: new Date()
+    },
+    {
+      key: "5",
+      dateItem: new Date()
+    },
+    {
+      key: "6",
+      dateItem: new Date()
+    },
+    {
+      key: "7",
+      dateItem: new Date()
+    },
+    {
+      key: "12",
+      dateItem: new Date()
+    },
+    {
+      key: "8",
+      dateItem: new Date()
+    },
+    {
+      key: "9",
+      dateItem: new Date()
+    },
+    {
+      key: "10",
+      dateItem: new Date()
+    },
+    {
+      key: "11",
+      dateItem: new Date()
+    },
+  ];
+
+
+
+useEffect(() => {
+  if(isExpanded === true){
+    Animated.timing(animatedValue, {
+      toValue: 700,
+      useNativeDriver: false,
+      duration: 500
+    }).start();
+    
+  }
+  else{
+    Animated.timing(animatedValue2, {
+      toValue: 410,
+      useNativeDriver: false,
+      duration: 500
+      
+    }).start();
+    
+  }
+  
+  return () => {
+    Animated.timing(animatedValue2, {
+      toValue: 410,
+      useNativeDriver: false,
+      duration: 500
+      
+    }).stop();
+  }
+}, [isExpanded])
+  
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.headerTitle}>Your drug{"\n"}cabinet</Text>
-      <UICalender/>
-      <View style={styles.medicineBlocks}>
+      <View style={styles.calenderBlock}>
+        <Text style={styles.headerTitle}>Your drug{"\n"}cabinet</Text>
+        <FlatList
+          data={dates}
+          renderItem={({item})=> <UICalender date={item}/>}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+        />
+      </View>
+      
+      <Animated.View style={[styles.medicineBlocks,{height:isExpanded ? animatedValue : animatedValue2}]}>
         
         <FlatList
           data={medicinereminder}
           renderItem={({item})=> <MedicineReminderComponent medicineDetails={item}/>}
           keyExtractor={item=>item.id}
           ListHeaderComponent={
-            <Text style={styles.title}>Today activities</Text>
+            <View style={styles.medicineBlockHeader}>
+              <Text style={styles.title}>Today activities</Text>
+              <Pressable 
+                onPress={()=>setIsExpaned(!isExpanded)} 
+                style={styles.expand}
+              >
+                <MaterialIcons 
+                  name={isExpanded ? "expand-more": "expand-less"} 
+                  size={24} 
+                  color="#2d222b" 
+                />
+              </Pressable>
+              
+            </View>
+            
           }
+          showsVerticalScrollIndicator={false}
           
         />
-      </View>
+      </Animated.View>
       
     </SafeAreaView>
   );
@@ -97,8 +211,13 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#ef9ea7"
+  },
+  calenderBlock:{
+    flex: 1,
     backgroundColor: "#ef9ea7",
-    justifyContent: "space-between",
+   
+    
   },
   headerTitle:{
     fontSize: 40,
@@ -108,18 +227,29 @@ const styles = StyleSheet.create({
     marginTop: 30
   },
   medicineBlocks:{
-    backgroundColor: '#Fdfcfa',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    height: "57%",
     paddingTop: 20,
+    backgroundColor: "#Fdfcfa"
     
+  },
+  medicineBlockHeader:{
+    flexDirection: "row",
+    alignItems: "center",
   },
   title:{
     fontSize: 22,
     fontWeight: "bold",
     padding: 5,
+    color: "#2d222b",
+    flex: 1,
     marginLeft: 30,
-    color: "#2d222b"
+    justifyContent: "center"
+  },
+  expand:{
+    width: "30%",
+    padding: 10,
+    justifyContent: "center",
+    alignItems: "center"
   }
 });

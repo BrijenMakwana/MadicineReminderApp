@@ -20,9 +20,13 @@ const MedicineReminderComponent = (props: MedicineReminderComponentprops) => {
     const [medicineReminder,setMedicineReminder] = useState(props.medicineDetails.medicineReminder);
 
     return (
-        <View style={[styles.fullContainer,{
-            backgroundColor: medicineReminder ? "#47488e" : "#fff"
-        }]}>
+        <View 
+            style={[styles.fullContainer,
+                {
+                backgroundColor: medicineReminder ? "#47488e" : "#fff"
+                }]}
+        >
+            {/* first half container wwithout reminder buttons */}
             <View style={styles.halfContainer}>
             {/* medicine icon */}
                 <View style={styles.icon}>
